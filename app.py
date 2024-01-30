@@ -5,8 +5,10 @@ from almacen import Almacen
 from producto import Producto
 from condicion_pago import CondicionPago
 from venta import Venta
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/api/clientes', methods=['GET'])
 def obtener_clientes():
@@ -51,6 +53,11 @@ def obtener_productos():
     productos = [producto.__dict__ for producto in Producto.listar_productos()]
     return jsonify(productos)
 
+@app.route('/api/ventas', methods=['GET'])
+def obtener_ventas():
+    ventas = [venta.to_dict() for venta in Venta.listar_ventas()]
+    return jsonify(ventas)
+
 @app.route('/api/ventas', methods=['POST'])
 def crear_venta():
     data = request.get_json()
@@ -59,16 +66,24 @@ def crear_venta():
     descuento = float(data.get('descuento', 0.0))
     codigo_almacen = data.get('codigo_almacen')
     codigo_condicion_pago = data.get('codigo_condicion_pago')
+    tipo_venta = data.get('tipo_venta')
+    tipo_entrega = data.get('tipo_entrega')
+    productos = data.get('productos')
 
     cliente = next((c for c in Cliente.listar_clientes() if c.codigo_cliente == codigo_cliente), None)
     almacen = next((a for a in Almacen.listar_almacenes() if a.codigo_almacen == codigo_almacen), None)
     condicion_pago = next((cp for cp in CondicionPago.listar_condiciones_pago() if cp.codigo_condicion_pago == codigo_condicion_pago), None)
 
     if cliente and almacen and condicion_pago:
-        nueva_venta = Venta.registrar_venta(codigo_venta, cliente, descuento, almacen, condicion_pago)
-        return jsonify(nueva_venta.__dict__)
+        nueva_venta = Venta.registrar_venta(codigo_venta, cliente, descuento, almacen, condicion_pago, tipo_venta, tipo_entrega)
+        for producto in productos:
+            nueva_venta.agregar_venta_detalle(producto, producto['cantidad'], producto['descuento'])
+
+        return jsonify(True)
     else:
         return jsonify({'error': 'Cliente, almacén o condición de pago no encontrados'}), 400
+
+    
 
 if __name__ == '__main__':
     app.run(debug=True)

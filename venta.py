@@ -12,9 +12,9 @@ class Venta:
         self.detalles_venta = []
 
     def agregar_venta_detalle(self, producto, cantidad, descuento):
-        detalle = VentaDetalle(self.codigo_venta, producto, producto.nombre_producto, producto.precio_unitario, cantidad, descuento)
+        detalle = VentaDetalle(self.codigo_venta, producto['codigo_producto'], producto['nombre_producto'], producto['precio_unitario'], cantidad, descuento)
         self.detalles_venta.append(detalle)
-        print(f"Producto {producto.nombre_producto} agregado a la venta {self.codigo_venta}.")
+        print(f"Producto {producto['nombre_producto']} agregado a la venta {self.codigo_venta}.")
 
     def calcular_total(self):
         total = sum(detalle.calcular_subtotal() for detalle in self.detalles_venta)
@@ -30,10 +30,20 @@ class Venta:
         return ventas_temporales
 
     @staticmethod
-    def registrar_venta(codigo_venta, cliente, descuento, almacen, condicion_pago, tipo_venta):
-        nueva_venta = Venta(codigo_venta, cliente, descuento, almacen, condicion_pago, tipo_venta)
+    def registrar_venta(codigo_venta, cliente, descuento, almacen, condicion_pago, tipo_venta, tipo_entrega):
+        nueva_venta = Venta(codigo_venta, cliente, descuento, almacen, condicion_pago, tipo_venta, tipo_entrega)
         ventas_temporales.append(nueva_venta)
         return nueva_venta
 
+    def to_dict(self):
+        return {
+            'codigo_venta': self.codigo_venta,
+            'cliente': self.cliente.to_dict(),
+            'descuento': self.descuento,
+            'almacen': self.almacen.to_dict(),
+            'condicion_pago': self.condicion_pago.to_dict(),
+            'tipo_venta' : self.tipo_venta,
+            'tipo_entrega' : self.tipo_entrega
+        }
 # Lista temporal para simular el almacenamiento
 ventas_temporales = []

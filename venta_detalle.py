@@ -1,7 +1,7 @@
 class VentaDetalle:
-    def __init__(self, codigo_venta, producto, nombre_producto, precio_unitario, cantidad, descuento):
+    def __init__(self, codigo_venta, codigo_producto, nombre_producto, precio_unitario, cantidad, descuento):
         self.codigo_venta = codigo_venta
-        self.producto = producto
+        self.codigo_producto = codigo_producto
         self.nombre_producto = nombre_producto
         self.precio_unitario = precio_unitario
         self.cantidad = cantidad

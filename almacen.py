@@ -12,6 +12,19 @@ class Almacen:
     def listar_almacenes():
         # Devolver la lista de almacenes almacenados
         return almacenes_temporales
+    
+    def to_dict(self):
+        return {
+            'codigo_almacen': self.codigo_almacen,
+            'nombre_almacen': self.nombre_almacen,
+        }
+
 
 # Lista temporal para simular el almacenamiento
 almacenes_temporales = []
+almacen1 = Almacen("A001", "Almacen1")
+almacen1.grabar_almacen()
+
+almacen2 = Almacen("A002", "Almacen2")
+almacen2.grabar_almacen()
+
