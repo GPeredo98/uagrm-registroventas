@@ -10,6 +10,11 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
+@app.route('/api/condiciones_pago', methods=['GET'])
+def obtener_cpagos():
+    pagos = [condicion_pago.__dict__ for condicion_pago in CondicionPago.listar_condiciones_pago()]
+    return jsonify(pagos)
+
 @app.route('/api/clientes', methods=['GET'])
 def obtener_clientes():
     clientes = [cliente.__dict__ for cliente in Cliente.listar_clientes()]

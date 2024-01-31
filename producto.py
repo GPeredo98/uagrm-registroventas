@@ -29,3 +29,7 @@ class Producto:
 
 # Lista temporal para simular el almacenamiento
 productos_temporales = []
+producto1 = Producto("S001", "Servicio 01", 100.00, 0.0)
+producto1.grabar_producto()
+producto2 = Producto("S002", "Servicio 02", 150.00, 0.0)
+producto2.grabar_producto()

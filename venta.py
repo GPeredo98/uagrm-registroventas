@@ -1,3 +1,7 @@
+from almacen import Almacen
+from cliente import Cliente
+from condicion_pago import CondicionPago
+from producto import Producto
 from venta_detalle import VentaDetalle
 
 class Venta:
@@ -47,3 +51,18 @@ class Venta:
         }
 # Lista temporal para simular el almacenamiento
 ventas_temporales = []
+
+cliente = Cliente("C001", "Cliente1")
+cliente.grabar_cliente()
+
+almacen = Almacen("A001", "Almacen1")
+almacen.grabar_almacen()
+
+condicion_pago = CondicionPago("CP001", "Contado")
+condicion_pago.grabar_condicion_pago()
+
+producto = Producto("S001", "Servicio 01", 100.00, 0.0)
+producto.grabar_producto()
+
+venta = Venta.registrar_venta("V001", cliente, 5.0, almacen, condicion_pago, "SERVICIO","DELIVERY")
+#venta.agregar_venta_detalle(producto, 100, 0.0)
