@@ -32,12 +32,23 @@ def guadar_almacen():
     almacen.grabar_almacen()
     return jsonify(True)
 
+# ...
+
 @app.route('/api/clientes', methods=['POST'])
 def guardar_cliente():
     data = request.json
-    cliente = Cliente(data['codigo_cliente'], data['nombre_cliente'])
+    codigo_cliente = data['codigo_cliente']
+    nombre_cliente = data['nombre_cliente']
+    numero_ci_nit = data['numero_ci_nit']
+    tipo_documento = data['tipo_documento']
+    email = data['email']
+
+    cliente = Cliente(codigo_cliente, nombre_cliente, numero_ci_nit, tipo_documento, email)
     cliente.grabar_cliente()
     return jsonify(True)
+
+# ...
+
 
 @app.route('/api/condiciones_pago', methods=['POST'])
 def guardar_condicion_pago():
@@ -63,6 +74,12 @@ def obtener_ventas():
     ventas = [venta.to_dict() for venta in Venta.listar_ventas()]
     return jsonify(ventas)
 
+
+
+
+
+# ...
+
 @app.route('/api/ventas', methods=['POST'])
 def crear_venta():
     data = request.get_json()
@@ -87,6 +104,26 @@ def crear_venta():
         return jsonify(True)
     else:
         return jsonify({'error': 'Cliente, almacén o condición de pago no encontrados'}), 400
+
+# ...
+# ...
+
+@app.route('/api/ventas/<codigo_venta>/detalles', methods=['GET'])
+def obtener_detalles_venta(codigo_venta):
+    venta = Venta.obtener_venta_por_codigo(codigo_venta)
+    if venta:
+        detalles_venta = venta.listar_ventas_detalle()
+        return jsonify(detalles_venta)
+    else:
+        return jsonify({'error': 'Venta no encontrada'}), 404
+
+@app.route('/api/ventas/detalles', methods=['GET'])
+def obtener_todas_ventas_detalles():
+    detalles_venta = [detalle.to_dict() for venta in Venta.listar_ventas() for detalle in venta.detalles_venta]
+    return jsonify(detalles_venta)
+
+# ...
+
 
     
 

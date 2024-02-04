@@ -27,6 +27,8 @@ class Venta:
 
     def grabar_venta(self):
         ventas_temporales.append(self)
+        for detalle in self.detalles_venta:
+            detalle.grabar_venta_detalle()  # Llamada al método para grabar el detalle
         print(f"Venta {self.codigo_venta} grabada correctamente.")
 
     @staticmethod
@@ -46,23 +48,15 @@ class Venta:
             'descuento': self.descuento,
             'almacen': self.almacen.to_dict(),
             'condicion_pago': self.condicion_pago.to_dict(),
-            'tipo_venta' : self.tipo_venta,
-            'tipo_entrega' : self.tipo_entrega
+            'tipo_venta': self.tipo_venta,
+            'tipo_entrega': self.tipo_entrega
         }
+    def listar_ventas_detalle(self):
+        return [detalle.to_dict() for detalle in self.detalles_venta]
+
+    @staticmethod
+    def obtener_venta_por_codigo(codigo_venta):
+        return next((venta for venta in ventas_temporales if venta.codigo_venta == codigo_venta), None)
+
 # Lista temporal para simular el almacenamiento
 ventas_temporales = []
-
-cliente = Cliente("C001", "Cliente1")
-cliente.grabar_cliente()
-
-almacen = Almacen("A001", "Almacen1")
-almacen.grabar_almacen()
-
-condicion_pago = CondicionPago("CP001", "Contado")
-condicion_pago.grabar_condicion_pago()
-
-producto = Producto("S001", "Servicio 01", 100.00, 0.0)
-producto.grabar_producto()
-
-venta = Venta.registrar_venta("V001", cliente, 5.0, almacen, condicion_pago, "SERVICIO","DELIVERY")
-#venta.agregar_venta_detalle(producto, 100, 0.0)
