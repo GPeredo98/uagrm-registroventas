@@ -16,7 +16,7 @@ class CondicionPago:
     def to_dict(self):
         return {
             'codigo_condicion_pago': self.codigo_condicion_pago,
-            'descripcion': self.descripcion_condicion_pago,
+            'descripcion_condicion_pago': self.descripcion_condicion_pago,
         }
 
 # Lista temporal para simular el almacenamiento
